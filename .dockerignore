@@ -1,0 +1,33 @@
+# Version control
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+*.egg-info
+dist/
+build/
+.venv
+venv
+
+# Frontend (separate project)
+codemind-frontend/
+
+# Data
+chroma_data/
+
+# IDE
+.vscode
+.idea
+.claude
+
+# Misc
+*.md
+.env
+.env.*
+!.env.example
