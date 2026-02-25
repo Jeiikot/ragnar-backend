@@ -1,0 +1,37 @@
+from __future__ import annotations
+
+from langchain_text_splitters import Language
+
+EXTENSION_LANGUAGE_MAP: dict[str, Language] = {
+    ".py": Language.PYTHON,
+    ".js": Language.JS,
+    ".jsx": Language.JS,
+    ".ts": Language.TS,
+    ".tsx": Language.TS,
+    ".java": Language.JAVA,
+    ".kt": Language.KOTLIN,
+    ".go": Language.GO,
+    ".rs": Language.RUST,
+    ".rb": Language.RUBY,
+    ".php": Language.PHP,
+    ".scala": Language.SCALA,
+    ".swift": Language.SWIFT,
+    ".c": Language.C,
+    ".h": Language.C,
+    ".cpp": Language.CPP,
+    ".hpp": Language.CPP,
+    ".cs": Language.CSHARP,
+    ".lua": Language.LUA,
+    ".pl": Language.PERL,
+    ".hs": Language.HASKELL,
+    ".ex": Language.ELIXIR,
+    ".exs": Language.ELIXIR,
+    ".html": Language.HTML,
+    ".md": Language.MARKDOWN,
+    ".markdown": Language.MARKDOWN,
+    ".rst": Language.RST,
+    ".sol": Language.SOL,
+    ".proto": Language.PROTO,
+    ".tex": Language.LATEX,
+    ".ps1": Language.POWERSHELL,
+}
