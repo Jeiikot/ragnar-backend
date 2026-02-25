@@ -1,0 +1,40 @@
+default_language_version:
+  python: python3.12
+
+repos:
+  # Basic file hygiene and validation.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=2048"]
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Linting and formatting.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.10
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+  # Type checking.
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.1
+    hooks:
+      - id: mypy
+        args:
+          [
+            "--config-file=pyproject.toml",
+            "--ignore-missing-imports",
+            "api",
+            "core",
+          ]
+        pass_filenames: false
+        additional_dependencies:
+          - fastapi==0.115.8
+          - pydantic-settings==2.8.1
+          - SQLAlchemy==2.0.38
