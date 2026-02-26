@@ -26,7 +26,9 @@ def build_indexing_ports(settings: Settings, session_id: str | None = None) -> I
     )
 
 
-def build_document_ports(settings: Settings, session_id: str | None = None) -> DocumentIndexingPorts:
+def build_document_ports(
+    settings: Settings, session_id: str | None = None
+) -> DocumentIndexingPorts:
     """Wire PDF reader and writer implementations to the document indexing ports."""
     collection_name = session_id or settings.chroma_collection_name
     return DocumentIndexingPorts(

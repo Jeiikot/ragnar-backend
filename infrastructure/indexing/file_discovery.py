@@ -38,7 +38,7 @@ def collect_all_files(extracted_zip_root: Path) -> list[tuple[Path, str]]:
 
         relative = str(file_path.relative_to(extracted_zip_root))
         ext = file_path.suffix.lower()
-        
+
         if local_ignore_spec.match_file(relative) or not ext:
             logger.debug("Skipping ignored file: %s", relative)
             continue

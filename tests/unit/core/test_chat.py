@@ -163,5 +163,7 @@ class TestPromptInstructions:
         assert "Start with one explicit limitation sentence." in RAG_SYSTEM_PROMPT
         assert "Add 3-5 suggested questions as a numbered list." in RAG_SYSTEM_PROMPT
         assert "Do not invent missing facts, counts, or coverage." in RAG_SYSTEM_PROMPT
-        assert "Only suggest questions you can answer from the provided context." in RAG_SYSTEM_PROMPT
+        assert (
+            "Only suggest questions you can answer from the provided context." in RAG_SYSTEM_PROMPT
+        )
         assert "Assume retrieved context may be incomplete by default." in RAG_SYSTEM_PROMPT

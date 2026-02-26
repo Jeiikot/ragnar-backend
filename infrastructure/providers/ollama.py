@@ -30,9 +30,7 @@ class OllamaHTTPEmbeddings(Embeddings):
                 return json.loads(response.read().decode("utf-8", errors="replace"))
         except HTTPError as exc:
             body = exc.read().decode("utf-8", errors="replace")
-            raise ValueError(
-                f"Error raised by Ollama API HTTP code: {exc.code}, {body}"
-            ) from exc
+            raise ValueError(f"Error raised by Ollama API HTTP code: {exc.code}, {body}") from exc
         except (URLError, ValueError, OSError) as exc:
             raise ValueError(f"Error raised by Ollama API: {exc}") from exc
 

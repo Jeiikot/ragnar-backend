@@ -87,7 +87,9 @@ def index_documents(
     return len(chunks)
 
 
-def _index_pdf_zip(file_bytes: bytes, ports: DocumentIndexingPorts, settings: Settings) -> list[Document]:
+def _index_pdf_zip(
+    file_bytes: bytes, ports: DocumentIndexingPorts, settings: Settings
+) -> list[Document]:
     """Extract a ZIP archive and chunk every PDF found inside."""
     try:
         with zipfile.ZipFile(io.BytesIO(file_bytes)) as zip_archive:
