@@ -1,6 +1,6 @@
 [project]
 name = "ragnar-backend"
-version = "0.1.0"
+version = "0.2.0"
 description = "Index source code and ask natural language questions about it via REST API"
 requires-python = ">=3.11"
 dependencies = [

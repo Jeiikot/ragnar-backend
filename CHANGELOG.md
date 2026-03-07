@@ -4,6 +4,31 @@ All notable changes to the Ragnar backend are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.2.0] - 2026-03-07
+
+### CI
+
+- **ci:** Add git-cliff config and generate initial changelog
+
+
+### Documentation
+
+- **api:** Rewrite README to reflect DDD-lite architecture
+
+- **docs:** Add skills reference and simplify CLAUDE.md
+
+
+### Features
+
+- **api:** Add standardized response envelope and error handler
+
+- **domain:** Add domain error hierarchy
+
+
+### Styling
+
+- **api:** Apply ruff formatting fixes
+
 ## [0.1.0] - 2026-02-25
 
 ### CI
