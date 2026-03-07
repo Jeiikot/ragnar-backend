@@ -11,8 +11,8 @@ class TestChatEndpoint:
         )
         assert resp.status_code == 200
         data = resp.json()
-        assert data["answer"] == "Test answer"
-        assert data["sources"] == ["test.py:1"]
+        assert data["data"]["answer"] == "Test answer"
+        assert data["data"]["sources"] == ["test.py:1"]
         mock_chat_engine.aask.assert_called_once_with(
             question="what does main do?", session_id="s1"
         )
@@ -28,6 +28,8 @@ class TestChatEndpoint:
             json={"message": "test", "session_id": "fail"},
         )
         assert resp.status_code == 500
+        body = resp.json()
+        assert body["error_code"] == "CHAT_FAILED"
 
     def test_chat_empty_message_rejected(self, client) -> None:  # type: ignore[no-untyped-def]
         resp = client.post("/api/v1/chat", json={"message": ""})

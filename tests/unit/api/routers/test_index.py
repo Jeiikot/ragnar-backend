@@ -19,7 +19,8 @@ class TestIndexEndpoint:
             )
 
         assert resp.status_code == 200
-        assert resp.json()["documents_indexed"] == 12
+        body = resp.json()
+        assert body["data"]["documents_indexed"] == 12
         mock_index.assert_called_once()
 
     def test_zip_index_rejects_non_zip_file(self, client) -> None:  # type: ignore[no-untyped-def]
@@ -29,7 +30,8 @@ class TestIndexEndpoint:
         )
 
         assert resp.status_code == 400
-        assert "zip" in resp.json()["detail"].lower()
+        body = resp.json()
+        assert body["error_code"] == "INVALID_FILE_TYPE"
 
     def test_zip_index_validation_error(self, client) -> None:  # type: ignore[no-untyped-def]
         with patch(
@@ -42,7 +44,9 @@ class TestIndexEndpoint:
             )
 
         assert resp.status_code == 500
-        assert "indexing failed" in resp.json()["detail"].lower()
+        body = resp.json()
+        assert body["error_code"] == "INDEXING_FAILED"
+        assert "indexing failed" in body["detail"].lower()
 
     def test_zip_index_internal_error(self, client) -> None:  # type: ignore[no-untyped-def]
         with patch(

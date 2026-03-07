@@ -41,8 +41,8 @@ class TestChatEndpointIntegration:
         )
         assert resp.status_code == 200
         data = resp.json()
-        assert "auth" in data["answer"].lower() or "JWT" in data["answer"]
-        assert len(data["sources"]) >= 1
+        assert "auth" in data["data"]["answer"].lower() or "JWT" in data["data"]["answer"]
+        assert len(data["data"]["sources"]) >= 1
 
     def test_health_endpoint(self, integration_client: TestClient) -> None:
         resp = integration_client.get("/api/v1/health")

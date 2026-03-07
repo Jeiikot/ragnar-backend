@@ -89,7 +89,7 @@ class TestFullChatFlow:
             files={"file": ("repo.zip", zip_payload, "application/zip")},
         )
         assert resp.status_code == 200
-        assert resp.json()["documents_indexed"] > 0
+        assert resp.json()["data"]["documents_indexed"] > 0
 
         # Step 2: Ask a question
         resp = e2e_client.post(
@@ -101,8 +101,8 @@ class TestFullChatFlow:
         )
         assert resp.status_code == 200
         data = resp.json()
-        assert len(data["answer"]) > 10
-        assert len(data["sources"]) >= 1
+        assert len(data["data"]["answer"]) > 10
+        assert len(data["data"]["sources"]) >= 1
 
     def test_session_continuity(self, e2e_client: TestClient, sample_project: Path) -> None:
         # Index first
@@ -130,4 +130,4 @@ class TestFullChatFlow:
             },
         )
         assert resp.status_code == 200
-        assert len(resp.json()["answer"]) > 10
+        assert len(resp.json()["data"]["answer"]) > 10

@@ -13,7 +13,7 @@ from fastapi.responses import JSONResponse
 
 from api.routers import chat as chat_router
 from api.routers import index as index_router
-from api.schemas import ErrorResponse, HealthResponse
+from api.schemas import ApiErrorResponse, ErrorCode, HealthResponse
 from infrastructure.indexing.file_discovery import load_local_ignore_spec
 from shared.config import get_settings
 
@@ -83,10 +83,24 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(HTTPException)
     async def _http_exception_handler(_request: Request, exc: HTTPException) -> JSONResponse:
-        detail = exc.detail if isinstance(exc.detail, str) else "Request failed"
+        if isinstance(exc.detail, dict) and "error_code" in exc.detail:
+            error_code = exc.detail["error_code"]
+            message = exc.detail.get("detail", "Request failed")
+        else:
+            message = exc.detail if isinstance(exc.detail, str) else "Request failed"
+            error_code = (
+                ErrorCode.INVALID_FILE_TYPE
+                if exc.status_code == 400
+                else ErrorCode.VALIDATION_ERROR
+                if exc.status_code == 422
+                else ErrorCode.INTERNAL_ERROR
+            )
         return JSONResponse(
             status_code=exc.status_code,
-            content=ErrorResponse(detail=detail).model_dump(),
+            content=ApiErrorResponse(
+                detail=message,
+                error_code=error_code,
+            ).model_dump(),
         )
 
     @app.exception_handler(RequestValidationError)
@@ -94,9 +108,17 @@ def create_app() -> FastAPI:
         _request: Request, exc: RequestValidationError
     ) -> JSONResponse:
         logger.warning("Request validation failed: %s", exc.errors())
+        field_details: dict[str, list[str]] = {}
+        for err in exc.errors():
+            loc = ".".join(str(part) for part in err.get("loc", []) if part != "body")
+            field_details.setdefault(loc, []).append(err.get("msg", "invalid"))
         return JSONResponse(
             status_code=422,
-            content=ErrorResponse(detail="Validation error").model_dump(),
+            content=ApiErrorResponse(
+                detail="Validation error",
+                error_code=ErrorCode.VALIDATION_ERROR,
+                details=field_details or None,
+            ).model_dump(),
         )
 
     @app.exception_handler(Exception)
@@ -104,7 +126,10 @@ def create_app() -> FastAPI:
         logger.exception("Unhandled exception")
         return JSONResponse(
             status_code=500,
-            content=ErrorResponse(detail="Internal server error").model_dump(),
+            content=ApiErrorResponse(
+                detail="Internal server error",
+                error_code=ErrorCode.INTERNAL_ERROR,
+            ).model_dump(),
         )
 
     app.include_router(index_router.router)
